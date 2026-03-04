@@ -1,26 +1,51 @@
+# OS
 .DS_Store
-.env
-dist/
-node_modules/
 DS_Store
-*.log
-*.env
+Thumbs.db
+Desktop.ini
+
+# Environment & secrets
+.env
+.env.*
 *.pem
 *.key
 *.crt
 *.p12
 *.jks
-*.bak
-*.tmp
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / IDE
 *.swp
 *.swo
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archives & binaries
 *.zip
 *.tar.gz
 *.rar
 *.7z
 *.exe
 
+# Temp files
+*.bak
+*.tmp
+
+# Project-specific
 diagrams/
 docs/plans/
-
 .claude/
+tasks/
