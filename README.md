@@ -28,6 +28,12 @@ This skill fixes that. Real typography, dark/light themes, interactive Mermaid d
 
 ## Install
 
+**Gemini CLI (Recommended):**
+```bash
+gemini extensions install https://github.com/nicobailon/visual-explainer
+```
+*Note: Make sure to set `GEMINI_API_KEY` in your environment to use the native image generation features.*
+
 **Pi:**
 ```bash
 pi install https://github.com/nicobailon/visual-explainer
@@ -51,6 +57,11 @@ cp ~/.claude/skills/visual-explainer/prompts/*.md ~/.claude/commands/
 | `/plan-review` | Compare a plan against the codebase with risk assessment |
 | `/project-recap` | Mental model snapshot for context-switching back to a project |
 | `/fact-check` | Verify accuracy of a document against actual code |
+| `/visual-generate` | Generate high-quality images from prompts |
+| `/visual-icon` | Create app icons and UI elements |
+| `/visual-pattern` | Generate seamless, tileable textures |
+| `/visual-story` | Create a sequence of visually consistent images |
+| `/visual-diagram` | Generate professional diagrams as images |
 
 The agent also kicks in automatically when it's about to dump a complex table in the terminal (4+ rows or 3+ columns) — it renders HTML instead.
 

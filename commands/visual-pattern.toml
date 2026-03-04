@@ -1,0 +1,10 @@
+description = "Generate seamless, tileable textures"
+prompt = """
+Use the `generate_pattern` tool to generate a seamless pattern based on: {{args}}
+
+Core Principles:
+- Ensure perfect tiling without visible seams.
+- Match requested density and color schemes.
+
+Provide a description of the generated pattern.
+"""

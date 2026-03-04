@@ -1,0 +1,11 @@
+description = "Generate high-quality images from descriptive prompts"
+prompt = """
+Use the `generate_image` tool to generate images based on the user's prompt: {{args}}
+
+Adhere to these core generation principles:
+1. Precise Count Adherence: If the user specifies --count=N, generate exactly N images. Default is 1.
+2. Style and Variation Compliance: Apply requested artistic styles and variations.
+3. Text Accuracy: Prioritize accuracy and professionalism in any text within images.
+
+After generating, provide a brief description of each image and state where they were saved.
+"""

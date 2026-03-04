@@ -1731,3 +1731,150 @@ Small image floated beside a section. Use when the illustration supports but doe
 ```html
 <img class="accent-img" src="data:image/png;base64,..." alt="Descriptive alt text">
 ```
+
+## Generative Code Visualization Patterns
+
+Patterns specifically designed for the `/visual-code-explain` and `/code-archetype` commands.
+
+### Archetype Card
+A modular breakdown card featuring a generated icon, representing the architectural "archetype" of a subsystem (e.g., Auth, Storage, UI).
+
+```css
+.archetype-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.archetype-card__icon {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border-bright);
+}
+
+.archetype-card__content {
+  flex-grow: 1;
+}
+
+.archetype-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-bright);
+}
+
+.archetype-card__desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .archetype-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+```
+
+```html
+<div class="archetype-card">
+  <img class="archetype-card__icon" src="data:image/jpeg;base64,..." alt="Authentication module icon">
+  <div class="archetype-card__content">
+    <div class="archetype-card__title">Authentication Service</div>
+    <div class="archetype-card__desc">Handles user login, session management, and OAuth integrations.</div>
+  </div>
+</div>
+```
+
+### Intent Bridge (Bridge View)
+A two-column layout connecting a natural language prompt requirement (Intent) directly to the resulting code implementation.
+
+```css
+.intent-bridge {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) 40px minmax(300px, 2fr);
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.intent-bridge__prompt {
+  background: var(--surface-elevated);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.intent-bridge__prompt::before {
+  content: 'Intent';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--bg);
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.intent-bridge__connector {
+  display: flex;
+  justify-content: center;
+  color: var(--border-bright);
+}
+
+.intent-bridge__connector svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.intent-bridge__code {
+  min-width: 0; /* Prevent overflow */
+}
+
+@media (max-width: 768px) {
+  .intent-bridge {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .intent-bridge__connector {
+    transform: rotate(90deg);
+    padding: 8px 0;
+  }
+}
+```
+
+```html
+<div class="intent-bridge">
+  <div class="intent-bridge__prompt">
+    "Create a secure login endpoint that limits rate attempts."
+  </div>
+  <div class="intent-bridge__connector">
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </div>
+  <div class="intent-bridge__code">
+    <pre class="code-block"><code>const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5
+});
+app.post('/login', limiter, authenticateUser);</code></pre>
+  </div>
+</div>
+```

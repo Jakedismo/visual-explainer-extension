@@ -2,7 +2,7 @@
 name: visual-explainer
 description: Generate beautiful, self-contained HTML pages that visually explain systems, code changes, plans, and data. Use when the user asks for a diagram, architecture overview, diff review, plan review, project recap, comparison table, or any visual explanation of technical concepts. Also use proactively when you are about to render a complex ASCII table (4+ rows or 3+ columns) — present it as a styled HTML page instead.
 license: MIT
-compatibility: Requires a browser to view generated HTML files. Optional surf-cli for AI image generation.
+compatibility: Requires a browser to view generated HTML files. Native MCP image generation included.
 metadata:
   author: nicobailon
   version: "0.4.4"
@@ -88,26 +88,16 @@ Vary the choice each time. If the last diagram was dark and technical, make the 
 
 **Mermaid CSS class collision constraint:** Never define `.node` as a page-level CSS class. Mermaid.js uses `.node` internally on SVG `<g>` elements with `transform: translate(x, y)` for positioning. Page-level `.node` styles (hover transforms, box-shadows) leak into diagrams and break layout. Use the namespaced `.ve-card` class for card components instead. The only safe way to style Mermaid's `.node` is scoped under `.mermaid` (e.g., `.mermaid .node rect`).
 
-**AI-generated illustrations (optional).** If [surf-cli](https://github.com/nicobailon/surf-cli) is available, you can generate images via Gemini and embed them in the page for creative, illustrative, explanatory, educational, or decorative purposes. Check availability with `which surf`. If available:
+**AI-generated illustrations (native).** Use the built-in `generate_image`, `generate_icon`, or `generate_pattern` tools provided by the visual-explainer MCP server to generate images via the Gemini API and embed them in the page for creative, illustrative, explanatory, educational, or decorative purposes.
 
-```bash
-# Generate to a temp file (use --aspect-ratio for control)
-surf gemini "descriptive prompt" --generate-image /tmp/ve-img.png --aspect-ratio 16:9
-
-# Base64 encode for self-containment (macOS)
-IMG=$(base64 -i /tmp/ve-img.png)
-# Linux: IMG=$(base64 -w 0 /tmp/ve-img.png)
-
-# Embed in HTML and clean up
-# <img src="data:image/png;base64,${IMG}" alt="descriptive alt text">
-rm /tmp/ve-img.png
-```
+These tools will return a base64 data URI that you can directly embed in the HTML:
+`<img src="data:image/jpeg;base64,..." alt="descriptive alt text">`
 
 See `./references/css-patterns.md` for image container styles (hero banners, inline illustrations, captions).
 
 **When to use:** Hero banners that establish the page's visual tone. Conceptual illustrations for abstract systems that Mermaid can't express (physical infrastructure, user journeys, mental models). Educational diagrams that benefit from artistic or photorealistic rendering. Decorative accents that reinforce the aesthetic.
 
-**When to skip:** Anything Mermaid or CSS handles well. Generic decoration that doesn't convey meaning. Data-heavy pages where images would distract. Always degrade gracefully — if surf isn't available, skip images without erroring. The page should stand on its own with CSS and typography alone.
+**When to skip:** Anything Mermaid or CSS handles well. Generic decoration that doesn't convey meaning. Data-heavy pages where images would distract. The page should stand on its own with CSS and typography alone.
 
 **Prompt craft:** Match the image to the page's palette and aesthetic direction. Specify the style (3D render, technical illustration, watercolor, isometric, flat vector, etc.) and mention dominant colors from your CSS variables. Use `--aspect-ratio 16:9` for hero banners, `--aspect-ratio 1:1` for inline illustrations. Keep prompts specific — "isometric illustration of a message queue with cyan nodes on dark navy background" beats "a diagram of a queue."
 
@@ -298,7 +288,7 @@ An alternative output format for presenting content as a magazine-quality slide 
 
 **Slide types (10):** Title, Section Divider, Content, Split, Diagram, Dashboard, Table, Code, Quote, Full-Bleed. Each has a defined layout in `slide-patterns.md`. Content that exceeds a slide's density limit splits across multiple slides — never scrolls within a slide.
 
-**Visual richness:** Check `which surf` at the start. If surf-cli is available, generate 2–4 images (title slide background, full-bleed background, optional content illustrations) before writing HTML — see the Proactive Imagery section in `slide-patterns.md` for the workflow. Also use SVG decorative accents, per-slide background gradients, inline sparklines, and small Mermaid diagrams. Visual-first, text-second.
+**Visual richness:** Use the native `generate_image` tool to generate 2–4 images (title slide background, full-bleed background, optional content illustrations) before writing HTML — see the Proactive Imagery section in `slide-patterns.md` for the workflow. Also use SVG decorative accents, per-slide background gradients, inline sparklines, and small Mermaid diagrams. Visual-first, text-second.
 
 **Compositional variety:** Consecutive slides must vary spatial approach — centered, left-heavy, right-heavy, split, edge-aligned, full-bleed. Three centered slides in a row means push one off-axis.
 

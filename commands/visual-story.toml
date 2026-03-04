@@ -1,0 +1,10 @@
+description = "Create a sequence of visually consistent images for a narrative"
+prompt = """
+Use the `generate_image` tool to generate a sequence of images for: {{args}}
+
+Core Principles:
+- Maintain strict visual consistency across all images (color palette, typography, art style, character design).
+- Preserve the same visual mood and aesthetic throughout the story.
+
+Generate exactly the requested number of frames.
+"""

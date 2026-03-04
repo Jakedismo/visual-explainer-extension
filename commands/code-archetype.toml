@@ -1,0 +1,24 @@
+description = "Generate a technical icon and structural card for a module or subsystem"
+prompt = """
+Load the visual-explainer skill, then generate a visual archetype breakdown for `{{args}}` as a self-contained HTML page.
+
+Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.archetype-card` layout.
+
+**Data gathering phase:**
+1. Analyze the module, subsystem, or concept specified by `{{args}}`. What is its core responsibility?
+2. Identify its key components, dependencies, and APIs.
+
+**Icon Generation (Crucial Step):**
+1. Use the native `generate_icon` tool to create an icon representing this module.
+2. The prompt should be specific to the module's function (e.g., "A modern, minimalist flat vector icon of a vault or safe representing a secure data storage module, using slate and teal colors").
+3. Embed the resulting base64 image into the `.archetype-card`.
+
+**Diagram structure** — the page should include:
+1. **The Archetype Card** — Use the `.archetype-card` pattern (from `css-patterns.md`) featuring the generated icon, the module name, and a concise description of its role in the larger system.
+2. **Component Breakdown** — A grid (`.card-grid`) of smaller cards detailing the internal parts of the module.
+3. **Integration Points** — A list or small Mermaid diagram showing how this module connects to the rest of the application.
+
+Write to `~/.agent/diagrams/` with a descriptive filename (e.g., `archetype-module-name.html`). Open the result in the browser.
+
+Ultrathink.
+"""

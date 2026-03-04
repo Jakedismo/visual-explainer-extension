@@ -1,0 +1,11 @@
+description = "Create app icons and UI elements in multiple sizes"
+prompt = """
+Use the `generate_icon` tool to generate an icon based on: {{args}}
+
+Core Principles:
+- Create clean, scalable designs suitable for icons.
+- Use appropriate conventions for the target platform.
+- Ensure legibility at small sizes.
+
+Provide a description of the generated icon.
+"""

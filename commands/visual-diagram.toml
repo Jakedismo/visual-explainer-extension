@@ -1,0 +1,10 @@
+description = "Generate professional diagrams and flowcharts as images"
+prompt = """
+Use the `generate_image` tool to generate a professional diagram based on: {{args}}
+
+Core Principles:
+- Use professional diagramming conventions.
+- Ensure text labels are clear and properly positioned.
+- Follow standard symbols and layouts for the diagram type.
+- Maintain readability at the intended viewing size.
+"""

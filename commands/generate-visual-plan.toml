@@ -1,7 +1,6 @@
----
-description: Generate a visual HTML implementation plan — detailed feature specification with state machines, code snippets, and edge cases
----
-Load the visual-explainer skill, then generate a comprehensive visual implementation plan for `$@` as a self-contained HTML page.
+description = "Generate a visual HTML implementation plan — detailed feature specification with state machines, code snippets, and edge cases"
+prompt = """
+Load the visual-explainer skill, then generate a comprehensive visual implementation plan for `{{args}}` as a self-contained HTML page.
 
 Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Use an editorial or blueprint aesthetic, but vary fonts and palette from previous diagrams.
 
@@ -50,9 +49,9 @@ Verify each against the code. If something cannot be verified, mark it as uncert
 
 **Diagram structure** — the page should include:
 
-1. **Header** — feature name, one-line description, scope summary. *Visual treatment: use a distinctive header with monospace label ("Feature Plan", "Implementation Spec", etc.), large italic title, and muted subtitle. Set the tone for the page.*
+1. **Header** — feature name, one-line description, scope summary. *Visual treatment: use a distinctive header with monospace label (\"Feature Plan\", \"Implementation Spec\", etc.), large italic title, and muted subtitle. Set the tone for the page.*
 
-2. **The Problem** — side-by-side comparison panels showing current behavior vs. desired behavior. Use concrete examples, not abstract descriptions. Show what the user experiences or what the code does, step by step. *Visual treatment: two-column grid with rose-tinted "Before" header and sage-tinted "After" header. Numbered flow steps with arrows between them.*
+2. **The Problem** — side-by-side comparison panels showing current behavior vs. desired behavior. Use concrete examples, not abstract descriptions. Show what the user experiences or what the code does, step by step. *Visual treatment: two-column grid with rose-tinted \"Before\" header and sage-tinted \"After\" header. Numbered flow steps with arrows between them.*
 
 3. **State Machine** — Mermaid flowchart or stateDiagram showing the states and transitions. Label edges with the triggers (commands, events, conditions). *Wrap in `.mermaid-wrap` with zoom controls. Use `flowchart TD` instead of `stateDiagram-v2` if labels need special characters like colons or parentheses. Add explanatory caption below the diagram.*
 
@@ -85,10 +84,10 @@ Verify each against the code. If something cannot be verified, mark it as uncert
 
 **Typography and color:**
 - Pick a distinctive font pairing (not Inter/Roboto)
-- Use semantic accent colors: gold for primary accents, sage for "after"/success states, rose for "before"/warning states
+- Use semantic accent colors: gold for primary accents, sage for \"after\"/success states, rose for \"before\"/warning states
 - Both light and dark themes must work
 
-**Optional hero image** — if `surf` CLI is available (`which surf`), consider generating a conceptual illustration that captures the feature's essence. Use for abstract concepts that benefit from visual metaphor. Skip for purely structural changes. Embed as base64 data URI using the `.hero-img-wrap` pattern from css-patterns.md.
+**Optional hero image** — use the built-in `generate_image` tool provided by the visual-explainer MCP server to generate a conceptual illustration that captures the feature's essence. Use for abstract concepts that benefit from visual metaphor. Skip for purely structural changes. Embed as base64 data URI using the `.hero-img-wrap` pattern from css-patterns.md.
 
 **Code block requirements:**
 - Always use `white-space: pre-wrap` and `word-break: break-word`
@@ -105,3 +104,4 @@ Verify each against the code. If something cannot be verified, mark it as uncert
 Write to `~/.agent/diagrams/` with a descriptive filename (e.g., `feature-name-plan.html`). Open the result in the browser. Tell the user the file path.
 
 Ultrathink.
+"""

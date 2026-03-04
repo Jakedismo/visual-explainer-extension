@@ -1,0 +1,26 @@
+description = "Explain the logic of a generated code file, mapping user intent to implementation"
+prompt = """
+Load the visual-explainer skill, then generate a comprehensive visual explanation for `{{args}}` as a self-contained HTML page.
+
+Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.intent-bridge` layout.
+
+**Data gathering phase** — understand the context before designing:
+1. **Target File:** Read the code in the file specified by `{{args}}`.
+2. **Intent Extraction:** If this file was recently generated, look for context in the current chat history, commit messages, or comments to understand *why* this code was written. What were the core natural language requirements?
+3. **Code Mapping:** Map those extracted intents to specific functions, classes, or code blocks within the file.
+4. **Structural Analysis:** Identify the main components and how they interact.
+
+**Diagram structure** — the page should include:
+
+1. **Header** — The file path, a one-line description of its purpose, and the language/framework. Use a distinctive header.
+2. **The "Why" (Context)** — A brief prose section or callout explaining the goal this code solves.
+3. **Intent Bridge** — This is the core of the visualization. For each major requirement or piece of logic, use the `.intent-bridge` CSS pattern (from `css-patterns.md`) to show a two-column layout:
+   - **Left:** The natural language intent ("We needed a secure login with rate limiting").
+   - **Right:** The code snippet that implements it.
+4. **Logic Flow (Optional)** — If the file contains complex state or data flow, include a Mermaid diagram (`flowchart TD` or `sequenceDiagram`). Wrap in `.mermaid-wrap`.
+5. **Archetype Integration** — Use the native `generate_icon` tool to create a minimalist icon representing the primary function of this file (e.g., a lock for auth, a database for models). Embed it near the top of the page.
+
+Write to `~/.agent/diagrams/` with a descriptive filename (e.g., `visual-code-explain-filename.html`). Open the result in the browser.
+
+Ultrathink.
+"""
