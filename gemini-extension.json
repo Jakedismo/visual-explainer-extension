@@ -1,6 +1,6 @@
 {
-  "name": "visual-explainer",
-  "version": "0.5.0",
+  "name": "visual-explainer-extension",
+  "version": "1.0.0",
   "description": "Generate beautiful, self-contained HTML pages that visually explain systems, code changes, plans, and data. Now with native AI image generation.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
@@ -8,15 +8,15 @@
       "command": "node",
       "args": ["dist/index.js"],
       "env": {
-        "GEMINI_API_KEY": ""
+        "NANOBANANA_GEMINI_API_KEY": ""
       }
     }
   },
   "settings": [
     {
       "name": "api_key",
-      "description": "Your Gemini API Key for image generation",
-      "envVar": "GEMINI_API_KEY",
+      "description": "Your Gemini Nanobanana API Key for image generation",
+      "envVar": "NANOBANANA_GEMINI_API_KEY",
       "sensitive": true
     }
   ]

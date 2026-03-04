@@ -1,8 +1,8 @@
 description = "Explain the logic of a generated code file, mapping user intent to implementation"
 prompt = """
-Load the visual-explainer skill, then generate a comprehensive visual explanation for `{{args}}` as a self-contained HTML page.
+Load the visual-explainer-extension skill, then generate a comprehensive visual explanation for `{{args}}` as a self-contained HTML page.
 
-Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.intent-bridge` layout.
+Follow the visual-explainer-extension skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.intent-bridge` layout.
 
 **Data gathering phase** — understand the context before designing:
 1. **Target File:** Read the code in the file specified by `{{args}}`.

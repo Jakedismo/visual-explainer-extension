@@ -122,7 +122,7 @@ Slide typography is 2–3× larger than scrollable pages. Page-sized text on a v
 
 ## Cinematic Transitions
 
-IntersectionObserver adds `.visible` when a slide enters the viewport. Slides animate in once and stay visible when scrolling back.
+IntersectionObserver adds `.visible` when a slide enters the viewport. Slides animate in once and stay visible when scrolling back. The easing curve `cubic-bezier(0.22, 1, 0.36, 1)` produces a spring-like deceleration — fast start, gentle landing — that feels physical and intentional.
 
 ```css
 /* Slide entrance — fade + lift + subtle scale */
@@ -130,8 +130,8 @@ IntersectionObserver adds `.visible` when a slide enters the viewport. Slides an
   opacity: 0;
   transform: translateY(40px) scale(0.98);
   transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .slide.visible {
@@ -142,10 +142,10 @@ IntersectionObserver adds `.visible` when a slide enters the viewport. Slides an
 /* Staggered child reveals — add .reveal to each content element */
 .slide .reveal {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px);
   transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .slide.visible .reveal {
@@ -153,13 +153,31 @@ IntersectionObserver adds `.visible` when a slide enters the viewport. Slides an
   transform: none;
 }
 
-/* Stagger delays — up to 6 children per slide */
-.slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
-.slide.visible .reveal:nth-child(2) { transition-delay: 0.2s; }
-.slide.visible .reveal:nth-child(3) { transition-delay: 0.3s; }
-.slide.visible .reveal:nth-child(4) { transition-delay: 0.4s; }
-.slide.visible .reveal:nth-child(5) { transition-delay: 0.5s; }
-.slide.visible .reveal:nth-child(6) { transition-delay: 0.6s; }
+/* Stagger delays — up to 8 children per slide, tighter initial gap */
+.slide.visible .reveal:nth-child(1) { transition-delay: 0.08s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.16s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.24s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.32s; }
+.slide.visible .reveal:nth-child(5) { transition-delay: 0.40s; }
+.slide.visible .reveal:nth-child(6) { transition-delay: 0.48s; }
+.slide.visible .reveal:nth-child(7) { transition-delay: 0.56s; }
+.slide.visible .reveal:nth-child(8) { transition-delay: 0.64s; }
+
+/* Directional reveal variants for compositional variety */
+.reveal--left {
+  transform: translateX(-32px) !important;
+}
+.reveal--right {
+  transform: translateX(32px) !important;
+}
+.reveal--scale {
+  transform: scale(0.92) !important;
+}
+.slide.visible .reveal--left,
+.slide.visible .reveal--right,
+.slide.visible .reveal--scale {
+  transform: none !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .slide,
@@ -183,9 +201,10 @@ All navigation is `position: fixed` with high z-index, layered above slides. Sty
   top: 0;
   left: 0;
   height: 3px;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, white));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 40%, transparent);
   z-index: 100;
-  transition: width 0.3s ease;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 ```
@@ -213,19 +232,30 @@ All navigation is `position: fixed` with high z-index, layered above slides. Sty
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .deck-dot:hover {
   opacity: 0.6;
+  transform: scale(1.3);
 }
 
 .deck-dot.active {
   opacity: 1;
-  transform: scale(1.5);
+  width: 8px;
+  height: 20px;
+  border-radius: 4px;
   background: var(--accent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 ```
+
+The active dot morphs from a circle into a rounded rectangle (pill shape), creating a clear visual anchor without needing the `scale()` transform that previously caused overlap with neighboring dots.
 
 ### Slide Counter
 
@@ -269,23 +299,26 @@ Auto-fade after first interaction or after 4 seconds.
 
 ### Chrome Visibility on Mixed Backgrounds
 
-For decks where some slides are light and some dark (especially full-bleed slides), nav chrome needs to remain visible. Two approaches:
+For decks where some slides are light and some dark (especially full-bleed slides), nav chrome needs to remain visible. Use frosted glass with a text shadow fallback:
 
 ```css
-/* Approach A: subtle backdrop on chrome elements */
+/* Frosted glass chrome — visible on any background */
 .deck-dots,
 .deck-counter {
-  background: color-mix(in srgb, var(--bg) 70%, transparent 30%);
-  padding: 6px;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  padding: 8px;
   border-radius: 20px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
 }
 
-/* Approach B: text shadow for legibility on any background */
+/* Text shadow fallback for counter and hints */
 .deck-counter,
 .deck-hints {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 0px 8px rgba(0, 0, 0, 0.1);
 }
 ```
 
@@ -507,16 +540,20 @@ Oversized decorative number (200px+, ultra-light weight) with heading. Breathing
 }
 
 .slide--divider .slide__number {
-  font-size: clamp(100px, 22vw, 260px);
+  font-size: clamp(100px, 22vw, 280px);
   font-weight: 200;
   line-height: 0.85;
-  opacity: 0.08;
+  opacity: 0.07;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -55%);
   pointer-events: none;
   font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, var(--text) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 ```
 
@@ -557,22 +594,44 @@ Heading + bullets or paragraphs. Asymmetric layout — content offset to one sid
 }
 
 .slide--content .slide__bullets li {
-  padding: 8px 0 8px 20px;
+  padding: 10px 0 10px 24px;
   position: relative;
   font-size: clamp(16px, 2vw, 22px);
   line-height: 1.6;
   color: var(--text-dim);
+  transition: color 0.2s;
 }
 
 .slide--content .slide__bullets li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Numbered bullet variant — use .slide__bullets--numbered */
+.slide__bullets--numbered { counter-reset: bullet; }
+.slide__bullets--numbered li { padding-left: 32px; }
+.slide__bullets--numbered li::before {
+  content: counter(bullet, decimal-leading-zero);
+  counter-increment: bullet;
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  transform: translateY(-50%);
 }
 ```
 
@@ -618,6 +677,7 @@ Asymmetric two-panel (60/40 or 70/30). Before/after, text+diagram, text+image. E
 
 .slide--split .slide__panel--secondary {
   background: var(--surface2);
+  border-left: 1px solid var(--border);
 }
 ```
 
@@ -743,12 +803,18 @@ For simple linear flows (build steps, deployment stages, data pipelines) where M
   background: var(--surface);
   border: 1px solid var(--border);
   border-top: 3px solid var(--accent);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: clamp(14px, 2.5vh, 28px) clamp(12px, 1.5vw, 22px);
   display: flex;
   flex-direction: column;
   min-width: 0;
   overflow-wrap: break-word;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pipeline__step:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--bg) 60%, transparent);
 }
 
 .pipeline__num {
@@ -825,10 +891,16 @@ KPI cards at presentation scale (48–64px hero numbers). Mini-charts via Chart.
 .slide__kpi {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: clamp(16px, 3vh, 32px) clamp(16px, 2vw, 24px);
   min-width: 0;
   overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide__kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--bg) 70%, transparent);
 }
 
 .slide__kpi-val {
@@ -911,11 +983,15 @@ KPI cards at presentation scale (48–64px hero numbers). Mini-charts via Chart.
 .slide__code-block {
   background: var(--code-bg, #1a1a2e);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: clamp(24px, 4vh, 48px) clamp(24px, 4vw, 48px);
+  border-radius: 14px;
+  padding: clamp(28px, 4vh, 48px) clamp(28px, 4vw, 48px);
   max-width: 900px;
   width: 100%;
   position: relative;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .slide__code-filename {
@@ -925,10 +1001,27 @@ KPI cards at presentation scale (48–64px hero numbers). Mini-charts via Chart.
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 4px;
+  padding: 4px 14px;
+  border-radius: 6px;
   background: var(--accent);
   color: var(--bg);
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Window dots decoration — add three dots top-left */
+.slide__code-block::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 90, 90, 0.6);
+  box-shadow:
+    14px 0 0 rgba(255, 190, 50, 0.6),
+    28px 0 0 rgba(80, 200, 80, 0.6);
 }
 
 .slide__code-block pre {
@@ -967,31 +1060,47 @@ KPI cards at presentation scale (48–64px hero numbers). Mini-charts via Chart.
 }
 
 .slide__quote-mark {
-  font-size: clamp(80px, 14vw, 180px);
+  font-size: clamp(80px, 14vw, 200px);
   line-height: 0.5;
-  opacity: 0.08;
-  font-family: Georgia, serif;
+  opacity: 0.06;
+  font-family: 'Instrument Serif', Georgia, serif;
   pointer-events: none;
   margin-bottom: -20px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--text-dim) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .slide--quote blockquote {
   font-size: clamp(24px, 4vw, 48px);
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.4;
   font-style: italic;
   margin: 0;
+  max-width: 20em;
 }
 
 .slide--quote cite {
   font-family: var(--font-mono);
   font-size: clamp(11px, 1.4vw, 14px);
   font-style: normal;
-  margin-top: clamp(16px, 3vh, 32px);
-  display: block;
+  margin-top: clamp(20px, 3vh, 36px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+
+.slide--quote cite::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 ```
 
@@ -1028,7 +1137,9 @@ Background image (surf-generated or CSS gradient) dominates the viewport. Text o
 .slide__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%),
+    radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.2) 100%);
   z-index: 1;
 }
 
@@ -1046,15 +1157,16 @@ Background image (surf-generated or CSS gradient) dominates the viewport. Text o
 
 ## Decorative SVG Elements
 
-Inline SVG accents lift slides from functional to editorial. Use sparingly — one or two per slide, never on every slide.
+Inline SVG accents lift slides from functional to editorial. Use sparingly — one or two per slide, never on every slide. Place decorative elements on title, divider, and quote slides; skip them on dense content slides where they compete for attention.
 
 ### Corner Accent
 
 ```html
-<!-- Top-right corner mark -->
-<svg class="slide__decor slide__decor--corner" width="120" height="120" viewBox="0 0 120 120">
-  <line x1="120" y1="0" x2="120" y2="40" stroke="var(--accent)" stroke-width="2" opacity="0.2"/>
-  <line x1="80" y1="0" x2="120" y2="0" stroke="var(--accent)" stroke-width="2" opacity="0.2"/>
+<!-- Top-right corner mark with crosshair detail -->
+<svg class="slide__decor slide__decor--corner" width="140" height="140" viewBox="0 0 140 140">
+  <line x1="140" y1="0" x2="140" y2="48" stroke="var(--accent)" stroke-width="1.5" opacity="0.15"/>
+  <line x1="92" y1="0" x2="140" y2="0" stroke="var(--accent)" stroke-width="1.5" opacity="0.15"/>
+  <circle cx="140" cy="0" r="3" fill="var(--accent)" opacity="0.2"/>
 </svg>
 ```
 
@@ -1076,10 +1188,28 @@ Inline SVG accents lift slides from functional to editorial. Use sparingly — o
 ```html
 <!-- Horizontal rule with diamond -->
 <svg class="slide__decor slide__decor--divider" width="200" height="20" viewBox="0 0 200 20">
-  <line x1="0" y1="10" x2="85" y2="10" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
-  <rect x="92" y="3" width="14" height="14" transform="rotate(45 99 10)" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
-  <line x1="115" y1="10" x2="200" y2="10" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="10" x2="85" y2="10" stroke="var(--accent)" stroke-width="1" opacity="0.2"/>
+  <rect x="92" y="3" width="14" height="14" transform="rotate(45 99 10)" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
+  <line x1="115" y1="10" x2="200" y2="10" stroke="var(--accent)" stroke-width="1" opacity="0.2"/>
 </svg>
+```
+
+### Floating Accent Rings
+
+```html
+<!-- Subtle concentric rings — use on title or quote slides -->
+<svg class="slide__decor slide__decor--rings" width="300" height="300" viewBox="0 0 300 300">
+  <circle cx="150" cy="150" r="80" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="150" cy="150" r="120" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.05"/>
+  <circle cx="150" cy="150" r="148" fill="none" stroke="var(--accent)" stroke-width="0.5" opacity="0.03"/>
+</svg>
+```
+
+```css
+.slide__decor--rings {
+  bottom: -60px;
+  left: -60px;
+}
 ```
 
 ### Geometric Background Pattern
@@ -1096,20 +1226,45 @@ Inline SVG accents lift slides from functional to editorial. Use sparingly — o
   pointer-events: none;
   z-index: 0;
 }
+
+/* Cross-hatch variant — more structured, good for Swiss Clean */
+.slide--with-crosshatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
 ```
 
 ### Per-Slide Background Variation
 
-Vary gradient direction and accent glow position across slides to create visual rhythm. Don't use a uniform background for every slide.
+Vary gradient direction and accent glow position across slides to create visual rhythm. Don't use a uniform background for every slide. Layer multiple radial gradients for depth — one large ambient glow and one smaller focused spot.
 
 ```css
 /* Vary these per slide via inline style or nth-child */
 .slide:nth-child(odd) {
-  background-image: radial-gradient(ellipse at 20% 80%, var(--accent-dim) 0%, transparent 50%);
+  background-image:
+    radial-gradient(ellipse at 20% 80%, var(--accent-dim) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--surface2) 30%, transparent) 0%, transparent 60%);
 }
 
 .slide:nth-child(even) {
-  background-image: radial-gradient(ellipse at 80% 20%, var(--accent-dim) 0%, transparent 50%);
+  background-image:
+    radial-gradient(ellipse at 80% 85%, var(--accent-dim) 0%, transparent 45%),
+    radial-gradient(ellipse at 15% 30%, color-mix(in srgb, var(--surface2) 30%, transparent) 0%, transparent 60%);
+}
+
+/* Every 5th slide — stronger accent for visual punctuation */
+.slide:nth-child(5n) {
+  background-image:
+    radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--surface2) 20%, transparent) 0%, transparent 70%);
 }
 ```
 

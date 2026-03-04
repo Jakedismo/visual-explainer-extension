@@ -21,3 +21,6 @@ DS_Store
 *.exe
 
 diagrams/
+docs/plans/
+
+.claude/

@@ -1,8 +1,8 @@
 description = "Generate a technical icon and structural card for a module or subsystem"
 prompt = """
-Load the visual-explainer skill, then generate a visual archetype breakdown for `{{args}}` as a self-contained HTML page.
+Load the visual-explainer-extension skill, then generate a visual archetype breakdown for `{{args}}` as a self-contained HTML page.
 
-Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.archetype-card` layout.
+Follow the visual-explainer-extension skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Pay special attention to the "Generative Code Visualization Patterns" section in `css-patterns.md` for the `.archetype-card` layout.
 
 **Data gathering phase:**
 1. Analyze the module, subsystem, or concept specified by `{{args}}`. What is its core responsibility?

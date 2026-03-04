@@ -1,10 +1,10 @@
 description = "Generate an HTML diagram for any topic"
 prompt = """
-Load the visual-explainer skill, then generate an HTML diagram for: {{args}}
+Load the visual-explainer-extension skill, then generate an HTML diagram for: {{args}}
 
-Follow the visual-explainer skill workflow. Read the reference template and CSS patterns before generating. Pick a distinctive aesthetic that fits the content — vary fonts, palette, and layout style from previous diagrams.
+Follow the visual-explainer-extension skill workflow. Read the reference template and CSS patterns before generating. Pick a distinctive aesthetic that fits the content — vary fonts, palette, and layout style from previous diagrams.
 
-If an image would genuinely enhance the page (e.g. a hero banner, conceptual illustration, or educational diagram that Mermaid can't express), use the `generate_image` tool provided by the visual-explainer extension. Match the image style to the page's palette. Embed as base64 data URI using the tool's output. See css-patterns.md \"Generated Images\" for container styles. Skip images when the topic is purely structural or data-driven.
+If an image would genuinely enhance the page (e.g. a hero banner, conceptual illustration, or educational diagram that Mermaid can't express), use the `generate_image` tool provided by the visual-explainer-extension extension. Match the image style to the page's palette. Embed as base64 data URI using the tool's output. See css-patterns.md \"Generated Images\" for container styles. Skip images when the topic is purely structural or data-driven.
 
 Write to `~/.agent/diagrams/` and open the result in the browser.
 """

@@ -1,12 +1,13 @@
 {
-  "name": "visual-explainer",
-  "version": "0.5.0",
+  "name": "visual-explainer-extension",
+  "version": "1.0.0",
   "description": "Agent skill that generates beautiful HTML pages for diagrams, diff reviews, plan reviews, and data tables with native AI image generation.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "vitest run"
   },
   "keywords": [
     "pi-package",
@@ -23,10 +24,13 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",
-    "@modelcontextprotocol/sdk": "^1.27.1"
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "dotenv": "^17.3.1",
+    "zod": "^4.3.6"
   }
 }

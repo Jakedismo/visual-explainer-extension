@@ -1,113 +1,75 @@
-<p>
-  <img src="banner.png" alt="visual-explainer" width="1100">
-</p>
+# visual-explainer-extension
 
-# visual-explainer
+![visual-explainer-extension banner](banner.png)
 
-**An agent skill that turns complex terminal output into styled HTML pages you actually want to read.**
+**Strikingly well-designed HTML diagrams and reports for the Gemini CLI.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+ABOUTME: `visual-explainer-extension` is a high-fidelity fork of the original `visual-explainer` project. It transforms complex terminal output into sophisticated, human-crafted HTML pages featuring advanced CSS orchestration, premium typography, and native AI image generation.
 
-Ask your agent to explain a system architecture, review a diff, or compare requirements against a plan. Instead of ASCII art and box-drawing tables, it generates a self-contained HTML page and opens it in your browser.
+## Project Overview
 
-```
-> draw a diagram of our authentication flow
-> /diff-review
-> /plan-review ~/docs/refactor-plan.md
-```
+This extension replaces generic ASCII art and "AI-slop" templates with interactive HTML pages that follow a strict **Design Engineering Mandate**. It uses modern CSS techniques like `@layer` and `@container` to produce layouts that feel professional, intentional, and high-contrast.
 
-https://github.com/user-attachments/assets/55ebc81b-8732-40f6-a4b1-7c3781aa96ec
+### 🚀 Next-Level Features (v1.0.0+)
 
-## Why
+- **Advanced CSS Orchestration**: Uses CSS Layers (`@layer`) for robust style management and Container Queries (`@container`) for modular, adaptive components.
+- **Premium Typography**: Strictly forbids generic fonts (Inter, Roboto). Employs "High-Character" pairings like *Instrument Serif + JetBrains Mono* and *IBM Plex Sans + Mono*.
+- **Aesthetic Recipes**: Built-in high-fidelity modes for **Blueprint**, **Editorial**, and **Paper/Ink** aesthetics.
+- **Interactive Components**: 
+  - **Intent Bridge**: Maps natural language intent directly to code implementation.
+  - **Archetype Cards**: Modular system overviews with AI-generated icons.
+  - **Enhanced Code Windows**: IDE-like blocks with file tabs and sophisticated syntax highlighting.
+- **Proactive Image Generation**: Automatically generates hero banners, module icons, and background patterns using the built-in Gemini Image tools.
+- **Anti-Slop Enforcement**: Hard rules to prevent generic AI patterns (no indigo gradients, no emoji headers, no unstructured code dumps).
 
-Every coding agent defaults to ASCII art when you ask for a diagram. Box-drawing characters, monospace alignment hacks, text arrows. It works for trivial cases, but anything beyond a 3-box flowchart turns into an unreadable mess.
+## Main Technologies
 
-Tables are worse. Ask the agent to compare 15 requirements against a plan and you get a wall of pipes and dashes that wraps and breaks in the terminal. The data is there but it's painful to read.
+- **HTML5 / Modern CSS**: Vanilla implementation leveraging CSS Layers and Container Queries.
+- **Mermaid.js (ESM)**: For topology-heavy diagrams with `layout: 'elk'` support.
+- **Chart.js**: For data-driven dashboards and metric visualizations.
+- **Lucide Icons**: Clean, consistent technical icons via SVG.
+- **Node.js / MCP**: Native image generation tools using the Gemini API.
 
-This skill fixes that. Real typography, dark/light themes, interactive Mermaid diagrams with zoom and pan. No build step, no dependencies beyond a browser.
+## Installation
 
-## Install
-
-**Gemini CLI (Recommended):**
 ```bash
-gemini extensions install https://github.com/nicobailon/visual-explainer
-```
-*Note: Make sure to set `GEMINI_API_KEY` in your environment to use the native image generation features.*
-
-**Pi:**
-```bash
-pi install https://github.com/nicobailon/visual-explainer
+# Link the extension to your Gemini CLI
+gemini extensions link .
 ```
 
-**Claude Code:**
-```bash
-git clone https://github.com/nicobailon/visual-explainer.git ~/.claude/skills/visual-explainer
-mkdir -p ~/.claude/commands
-cp ~/.claude/skills/visual-explainer/prompts/*.md ~/.claude/commands/
-```
+## Available Commands
 
-## Commands
-
-| Command | What it does |
+### Visualization Commands
+| Command | Description |
 |---------|-------------|
-| `/generate-web-diagram` | Generate an HTML diagram for any topic |
-| `/generate-visual-plan` | Generate a visual implementation plan for a feature or extension |
-| `/generate-slides` | Generate a magazine-quality slide deck |
-| `/diff-review` | Visual diff review with architecture comparison and code review |
-| `/plan-review` | Compare a plan against the codebase with risk assessment |
-| `/project-recap` | Mental model snapshot for context-switching back to a project |
-| `/fact-check` | Verify accuracy of a document against actual code |
-| `/visual-generate` | Generate high-quality images from prompts |
-| `/visual-icon` | Create app icons and UI elements |
-| `/visual-pattern` | Generate seamless, tileable textures |
-| `/visual-story` | Create a sequence of visually consistent images |
-| `/visual-diagram` | Generate professional diagrams as images |
+| `/diff-review` | Visual diff review with architecture comparison. |
+| `/fact-check` | Verify accuracy of a document against code. |
+| `/generate-slides` | Generate a magazine-quality slide deck. |
+| `/generate-visual-plan` | Generate a visual implementation plan. |
+| `/generate-web-diagram` | Generate an HTML diagram for any topic. |
+| `/plan-review` | Compare a plan against the codebase. |
+| `/project-recap` | Mental model snapshot for context-switching. |
+| `/visual-code-explain` | Explain the logic of a code file using Intent Bridges. |
+| `/code-archetype` | Generate structural cards for a module or subsystem. |
 
-The agent also kicks in automatically when it's about to dump a complex table in the terminal (4+ rows or 3+ columns) — it renders HTML instead.
+### Image Generation (Nanobanana Integration)
+| Command | Description |
+|---------|-------------|
+| `/visual-generate` | Generate high-quality images from prompts. |
+| `/visual-icon` | Create app icons and UI elements. |
+| `/visual-pattern` | Generate seamless, tileable textures. |
+| `/visual-story` | Create visually consistent story sequences. |
+| `/visual-diagram` | Generate professional diagrams as images. |
 
-## Slide Deck Mode
+## Model Instructions (SKILL.md)
 
-Any command that produces a scrollable page supports `--slides` to generate a slide deck instead:
+The core logic and design principles are located in `skills/visual-explainer/SKILL.md`. The model follows a **Design Tokens first** workflow, ensuring every output meets the "Squint Test" for visual hierarchy and the "Swap Test" for design intent.
 
-```
-/diff-review --slides
-/project-recap --slides 2w
-```
+## Development
 
-https://github.com/user-attachments/assets/342d3558-5fcf-4fb2-bc03-f0dd5b9e35dc
+- **Testing**: Use `gemini extensions link .` to test locally.
+- **Portability**: Keep HTML self-contained. All styles and logic are inlined for single-file portability.
+- **Performance**: Minimizes turns by reading reference materials in parallel.
 
-## How It Works
-
-```
-SKILL.md (workflow + design principles)
-    ↓
-references/           ← agent reads before generating
-├── css-patterns.md   (layouts, animations, theming)
-├── libraries.md      (Mermaid, Chart.js, fonts)
-├── responsive-nav.md (sticky TOC for multi-section pages)
-└── slide-patterns.md (slide engine, transitions, presets)
-    ↓
-templates/            ← reference templates with different palettes
-├── architecture.html
-├── mermaid-flowchart.html
-├── data-table.html
-└── slide-deck.html
-    ↓
-~/.agent/diagrams/filename.html → opens in browser
-```
-
-The skill routes to the right approach automatically: Mermaid for flowcharts and diagrams, CSS Grid for architecture overviews, HTML tables for data, Chart.js for dashboards.
-
-## Limitations
-
-- Requires a browser to view
-- Switching OS theme requires a page refresh for Mermaid SVGs
-- Results vary by model capability
-
-## Credits
-
-Borrows ideas from [Anthropic's frontend-design skill](https://github.com/anthropics/skills) and [interface-design](https://github.com/Dammyjay93/interface-design).
-
-## License
-
-MIT
+---
+*Forked from the original `visual-explainer` repository. Re-engineered for aesthetic excellence.*
