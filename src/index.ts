@@ -3,18 +3,12 @@
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import * as path from "path";
-import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { registerTools } from "./tools.js";
 import { registerResources } from "./resources.js";
 import { registerPrompts } from "./prompts.js";
 
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const projectRoot = path.resolve(__dirname, "..");
 
 const server = new McpServer(
   {
@@ -29,7 +23,7 @@ const server = new McpServer(
 );
 
 registerTools(server);
-registerResources(server, projectRoot);
+registerResources(server);
 registerPrompts(server);
 
 async function run() {

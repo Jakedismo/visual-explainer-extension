@@ -1,20 +1,14 @@
 // ABOUTME: Tests for the resources module.
-// ABOUTME: Verifies all templates and references are listed and readable.
+// ABOUTME: Verifies all templates and references are listed and readable via embedded assets.
 
 import { describe, it, expect } from "vitest";
 import { createTestClient } from "./helpers.js";
 import { registerResources } from "../resources.js";
-import * as path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const projectRoot = path.resolve(__dirname, "../..");
 
 describe("resources", () => {
   it("lists all 8 template and reference resources", async () => {
     const client = await createTestClient((server) =>
-      registerResources(server, projectRoot)
+      registerResources(server)
     );
     const { resources } = await client.listResources();
 
@@ -34,7 +28,7 @@ describe("resources", () => {
 
   it("resources have titles and descriptions", async () => {
     const client = await createTestClient((server) =>
-      registerResources(server, projectRoot)
+      registerResources(server)
     );
     const { resources } = await client.listResources();
 
@@ -47,7 +41,7 @@ describe("resources", () => {
 
   it("returns HTML content for template resources", async () => {
     const client = await createTestClient((server) =>
-      registerResources(server, projectRoot)
+      registerResources(server)
     );
     const result = await client.readResource({
       uri: "visual-explainer://templates/architecture",
@@ -60,7 +54,7 @@ describe("resources", () => {
 
   it("returns markdown content for reference resources", async () => {
     const client = await createTestClient((server) =>
-      registerResources(server, projectRoot)
+      registerResources(server)
     );
     const result = await client.readResource({
       uri: "visual-explainer://references/css-patterns",
