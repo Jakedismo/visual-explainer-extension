@@ -8,7 +8,7 @@
       "command": "node",
       "args": ["dist/index.js"],
       "env": {
-        "NANOBANANA_GEMINI_API_KEY": ""
+        "NANOBANANA_GEMINI_API_KEY": "${NANOBANANA_GEMINI_API_KEY}"
       }
     }
   },
