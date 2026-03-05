@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsx scripts/embed-assets.ts && tsc",
     "watch": "tsc --watch",
     "test": "vitest run"
   },
