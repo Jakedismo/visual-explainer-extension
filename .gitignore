@@ -19,6 +19,7 @@ node_modules/
 # Build output
 dist/
 *.tsbuildinfo
+src/embedded-assets.ts
 
 # Logs
 *.log
